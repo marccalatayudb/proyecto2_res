@@ -1,0 +1,6 @@
+
+$q="SELECT SEC_TO_TIME((TIMESTAMPDIFF(MINUTE ,tbl_reserva_recurso.Fecha_Ini,tbl_reserva_recurso.Fecha_Fin ))*60) AS h_total  FROM tbl_reserva_recurso WHERE Id_Reserva_Recurso = $id[id]";
+
+
+
+$q = "UPDATE `tbl_recurso` SET `Disponibilidad_Recurso`='Si',`Uso_Recurso` = (SELECT ADDTIME('$horas[h_total]', `Uso_Recurso`)) WHERE `Id_Recurso` = $reserva";
