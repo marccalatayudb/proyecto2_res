@@ -21,23 +21,21 @@
 			<div class="icon">
 				<span class="glyphicon glyphicon-user"></span>
 			</div>
-			<!-- aviso de error -->
 			<h2>Iniciar Sesi&#243;n</h2>
 			<!-- formulario -->
-			<form action="login.php" method="POST">
-				<?php include ('errors.php'); ?>
+			<form action="index.php" method="POST">
 				<div class="form-input inner-addon">
 					<span class="glyphicon glyphicon-user"></span>
-					<input type="text" name="username" id="username" placeholder="Usuario" maxlength="15" required>
+					<input type="text" name="username" id="username" placeholder="Usuario" maxlength="15">
 				</div>
 				<div class="form-input inner-addon">
 					<span class="glyphicon glyphicon-lock"></span>
-					<input type="password" name="password" id="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" maxlength="15" required>
+					<input type="password" name="password" id="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" maxlength="15">
 				</div>
-				<?php include ('errors.php'); ?>
+				<!-- aviso de error -->
+				<?php include 'errors.php'; ?>
 				<button type="submit" name="login" value="Entrar" class="btn-login"><span class="glyphicon glyphicon-log-in"></span> Entrar</button>
 			</form>
-			<?php include 'errors.php'; ?>
 		</div>
 	</body>
 </html>

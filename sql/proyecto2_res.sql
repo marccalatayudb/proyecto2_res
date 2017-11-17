@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2017 a las 15:21:12
+-- Tiempo de generación: 17-11-2017 a las 15:29:38
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -32,29 +32,30 @@ USE `proyecto2_res`;
 
 CREATE TABLE `recurso` (
   `idrecurso` int(3) NOT NULL,
-  `nom_recurso` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
+  `nom_recurso` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tipo_recurso` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `recurso`
 --
 
-INSERT INTO `recurso` (`idrecurso`, `nom_recurso`) VALUES
-(1, 'Aula A de teoría con Proyector'),
-(2, 'Aula B de teoría con Proyector'),
-(3, 'Aula C de teoría sin proyector'),
-(4, 'Aula de Informática A'),
-(5, 'Aula de Informática B'),
-(6, 'Despacho de entrevista A'),
-(7, 'Despacho de entrevista B'),
-(8, 'Sala de reuniones'),
-(9, 'Proyector portátil'),
-(10, 'Carro de portátiles'),
-(11, 'Portátil A1'),
-(12, 'Portátil B2'),
-(13, 'Portátil C3'),
-(14, 'Móvil A1'),
-(15, 'Móvil A2');
+INSERT INTO `recurso` (`idrecurso`, `nom_recurso`, `tipo_recurso`) VALUES
+(1, 'Aula A de teoría con Proyector', 'Aula'),
+(2, 'Aula B de teoría con Proyector', 'Aula'),
+(3, 'Aula C de teoría sin proyector', 'Aula'),
+(4, 'Aula de Informática A', 'Aula'),
+(5, 'Aula de Informática B', 'Aula'),
+(6, 'Despacho de entrevista A', 'Despacho'),
+(7, 'Despacho de entrevista B', 'Despacho'),
+(8, 'Sala de reuniones', 'Sala'),
+(9, 'Proyector portátil', 'Proyector'),
+(10, 'Carro de portátiles', 'Carro'),
+(11, 'Portátil A1', 'Portátil'),
+(12, 'Portátil B2', 'Portátil'),
+(13, 'Portátil C3', 'Portátil'),
+(14, 'Móvil A1', 'Móvil'),
+(15, 'Móvil A2', 'Móvil');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,7 @@ CREATE TABLE `reserva` (
 
 INSERT INTO `reserva` (`idreserva`, `idusuario`, `disponibilidad`) VALUES
 (1, 1, 0),
-(2, 2, 0),
+(2, NULL, 1),
 (3, NULL, 1),
 (4, NULL, 1),
 (5, NULL, 1),
@@ -99,8 +100,8 @@ CREATE TABLE `reserva_recurso` (
   `idreserva_recurso` int(3) NOT NULL,
   `idreserva` int(3) DEFAULT NULL,
   `idrecurso` int(3) DEFAULT NULL,
-  `fecha_hora_reserva` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_hora_devolucion` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `fecha_hora_reserva` datetime DEFAULT NULL,
+  `fecha_hora_devolucion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -108,21 +109,21 @@ CREATE TABLE `reserva_recurso` (
 --
 
 INSERT INTO `reserva_recurso` (`idreserva_recurso`, `idreserva`, `idrecurso`, `fecha_hora_reserva`, `fecha_hora_devolucion`) VALUES
-(1, 1, 1, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(2, 2, 2, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(3, NULL, 3, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(4, NULL, 4, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(5, NULL, 5, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(6, NULL, 6, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(7, NULL, 7, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(8, NULL, 8, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(9, NULL, 9, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(10, NULL, 10, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(11, NULL, 11, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(12, NULL, 12, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(13, NULL, 13, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(14, NULL, 14, '2017-11-10 09:00:00', '2017-11-10 11:00:00'),
-(15, NULL, 15, '2017-11-10 09:00:00', '2017-11-10 11:00:00');
+(1, 1, 1, '2017-11-17 15:15:31', '2017-11-17 15:13:15'),
+(2, NULL, 1, '2017-11-16 17:54:12', '2017-11-16 17:54:13'),
+(3, NULL, 3, '2017-11-16 17:54:14', '2017-11-16 17:54:15'),
+(4, NULL, 4, '2017-11-16 17:40:27', '2017-11-16 17:40:28'),
+(5, NULL, 5, '2017-11-16 17:40:29', '2017-11-16 17:40:29'),
+(6, 6, 6, NULL, NULL),
+(7, 7, 7, NULL, NULL),
+(8, 8, 8, NULL, NULL),
+(9, 9, 9, NULL, NULL),
+(10, 10, 10, NULL, NULL),
+(11, 11, 11, NULL, NULL),
+(12, 12, 12, NULL, NULL),
+(13, 13, 13, NULL, NULL),
+(14, 14, 14, NULL, NULL),
+(15, 15, 15, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -143,9 +144,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `nombre`, `apellidos`, `alias`, `pwd`) VALUES
-(1, 'Luis David', 'Pallo', 'ldavidp', 'hola'),
-(2, 'Óscar', 'Solé', 'osole', 'qweQWE123'),
-(3, 'Rubén', 'Jurado', 'rjurado', 'asdASD123');
+(1, 'Luis David', 'Pallo', 'ldavidp', 'qweQWE123'),
+(2, 'Óscar', 'Solé', 'osole', 'asdASD123'),
+(3, 'Rubén', 'Jurado', 'rjurado', 'zxcZXC123');
 
 --
 -- Índices para tablas volcadas
@@ -198,7 +199,7 @@ ALTER TABLE `reserva`
 -- AUTO_INCREMENT de la tabla `reserva_recurso`
 --
 ALTER TABLE `reserva_recurso`
-  MODIFY `idreserva_recurso` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idreserva_recurso` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

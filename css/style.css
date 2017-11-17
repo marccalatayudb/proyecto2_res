@@ -107,21 +107,6 @@ form button:hover, form button:active, form button:focus {
 }
 
 /* ---------- Botón de logout (Cerrar Sesión) ---------- */
-/*.btn-lg {
-	padding: 10px 16px;
-	font-size: 15px;
-	border-radius: 4px;
-}
-.btn-info{
-	color: pink;
-	background-color: red;
-	border: none;
-}
-.btn{
-	touch-action: manipulation;
-	cursor: pointer;
-}*/
-
 a {
 	padding: 8px 10px;
 	border-radius: 4px;
@@ -150,7 +135,12 @@ a.btn-logout:hover, a.btn-logout:active, a.btn-logout:focus {
 	color: #a94442;
 	background: #f2dede;
 	border-radius: 4px;
-	text-align: left;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.error p {
+	margin: 0 auto;
 }
 
 /* ---------------------------------------- Página Recursos ---------------------------------------- */
@@ -304,4 +294,7 @@ td button {
 
 button.reserva{
 	font-weight: bold;
+}
+p button.reserva {
+	font-size: 50px;
 }

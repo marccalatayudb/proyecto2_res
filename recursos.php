@@ -39,9 +39,14 @@
 					<span class="content-search-title">B&#250;squeda</span>
 					<form action="recursos.php">
 						<ul>
+<!-- 							<li>
+								<span>
+									<input type="text" name="nom_recurso">
+								</span>
+							</li> -->
 							<li>
 								<span>
-									<select name="nom_recurso">
+									<select name="tipo_recurso">
 										<option value="" selected>&#8211; Tipo de recurso &#8211;</option>
 										<option value="Aula">Aulas</option>
 										<option value="Despacho">Despachos</option>
@@ -53,28 +58,6 @@
 									</select>
 								</span>
 							</li>
-							<!-- <li>
-								<span>
-									<select name="nom_recurso_complete">
-										<option selected>&#8211; Recursos &#8211;</option>
-										<option value="Aula A de teor&#237;a con Proyector">Aula A de teor&#237;a con Proyector</option>
-										<option value="Aula B de teor&#237;a con Proyector">Aula B de teor&#237;a con Proyector</option>
-										<option value="Aula C de teor&#237;a sin proyector">Aula C de teor&#237;a sin proyector</option>
-										<option value="Aula de Inform&#225;tica A">Aula de Inform&#225;tica A</option>
-										<option value="Aula de Inform&#225;tica B">Aula de Inform&#225;tica B</option>
-										<option value="Despacho de entrevista A">Despacho de entrevista A</option>
-										<option value="Despacho de entrevista B">Despacho de entrevista B</option>
-										<option value="Sala de reuniones">Sala de reuniones</option>
-										<option value="Proyector port&#225;til">Proyector port&#225;til</option>
-										<option value="Carro de port&#225;tiles">Carro de port&#225;tiles</option>
-										<option value="Port&#225;til A1">Port&#225;til A1</option>
-										<option value="Port&#225;til B2">Port&#225;til B2</option>
-										<option value="Port&#225;til C3">Port&#225;til C3</option>
-										<option value="M&#243;vil A1">M&#243;vil A1</option>
-										<option value="M&#243;vil A2">M&#243;vil A2</option>
-									</select>
-								</span>
-							</li> -->
 							<li>
 								<span>
 									<select name="disponibilidad">
@@ -95,9 +78,7 @@
 				<!-- Contenido de la página -->
 				<div class="window-contenido-view">
 					<?php
-						// ...Continua el while del nombre $resname
-							// El LEFT JOIN mostrará todos los resultado la tabla principal (En este caso la tabla 'recursos') y demás campos nombrados (usuario, disponibilidad, etc...)
-							$sql="SELECT `nom_recurso`, `usuario`.`nombre`, `usuario`.`apellidos`, `reserva`.`disponibilidad`, `reserva_recurso`.`fecha_hora_reserva`, `reserva_recurso`.`fecha_hora_devolucion`
+							$sql="SELECT `tipo_recurso`, `nom_recurso`, `usuario`.`nombre`, `usuario`.`apellidos`, `reserva`.`idreserva`, `reserva`.`disponibilidad`, `reserva_recurso`.`idreserva_recurso`, `reserva_recurso`.`fecha_hora_reserva`, `reserva_recurso`.`fecha_hora_devolucion`
 										FROM `recurso`
 										LEFT JOIN `reserva_recurso` ON `recurso`.`idrecurso`=`reserva_recurso`.`idreserva_recurso`
 										LEFT JOIN `reserva` ON `recurso`.`idrecurso`=`reserva`.`idreserva`
@@ -106,17 +87,17 @@
 							$consulta=mysqli_query($conexion,$sql);
 
 							if (isset($_REQUEST['botonFiltro'])) {
-								$recurso=$_REQUEST['nom_recurso'];
-								// $tiporecuros=$_REQUEST['nom_recurso_complete'];
+								$tiporecurso=$_REQUEST['tipo_recurso'];
+								// $nomrecurso=$_REQUEST['nom_recurso_complete'];
 								$disponibilidad=$_REQUEST['disponibilidad'];
 
-								$sql="SELECT `nom_recurso`, `usuario`.`nombre`, `usuario`.`apellidos`, `reserva`.`disponibilidad`, `reserva_recurso`.`fecha_hora_reserva`, `reserva_recurso`.`fecha_hora_devolucion`
+								$sql="SELECT `tipo_recurso`, `nom_recurso`, `usuario`.`nombre`, `usuario`.`apellidos`, `reserva`.`idreserva`, `reserva`.`disponibilidad`, `reserva_recurso`.`idreserva_recurso`, `reserva_recurso`.`fecha_hora_reserva`, `reserva_recurso`.`fecha_hora_devolucion`
 											FROM `recurso`
 											LEFT JOIN `reserva_recurso` ON `recurso`.`idrecurso`=`reserva_recurso`.`idreserva_recurso`
 											LEFT JOIN `reserva` ON `recurso`.`idrecurso`=`reserva`.`idreserva`
 											LEFT JOIN `usuario` ON `reserva`.`idusuario`=`usuario`.`idusuario`";
 
-								$filtro="WHERE `recurso`.`nom_recurso` LIKE '%$recurso%' AND `reserva`.`disponibilidad` LIKE '%$disponibilidad%'";
+								$filtro="WHERE `recurso`.`tipo_recurso` LIKE '%$tiporecurso%' AND `reserva`.`disponibilidad` LIKE '%$disponibilidad%'";
 
 								$sqlfiltro=$sql.$filtro;
 
@@ -138,23 +119,37 @@
 
 									while ($result=mysqli_fetch_array($consulta)) {
 										echo "<tr>";
-											echo "<td>" . $result ['nom_recurso'] . "</td>"; // Campo1
-											echo "<td>" . $result ['nombre'] . " " . $result ['apellidos'] . "</td>"; // Campo 2
-											// Muestra si está diponible o no en la tabla
+											echo "<td>" . $result ['nom_recurso'] . "</td>";
+											echo "<td>" . $result ['nombre'] . " " . $result ['apellidos'] . "</td>";
 											if ($result['disponibilidad']>0) {
-												echo "<td>Disponible</td>"; // Campo 3
+												echo "<td>Disponible</td>";
 											} else {
-												echo "<td>No disponible</td>"; // Campo 3
+												echo "<td>No disponible</td>";
 											}
-											echo "<td>" . $result ['fecha_hora_reserva'] . "</td>"; // Campo 4
-											echo "<td>" . $result ['fecha_hora_devolucion'] . "</td>"; // Campo 5
-											// Muestra si esta disponible o no y habilita y muestra de color verde el boton de RESERVAR
+											$hora_reserva=strtotime($result ['fecha_hora_reserva']);
+											echo "<td>" . DATE('d/m/Y - H:i:s',$hora_reserva) . "</td>";
+											$hora_devolucion=strtotime($result ['fecha_hora_devolucion']);
+											echo "<td>" . DATE('d/m/Y - H:i:s',$hora_devolucion) . "</td>";
 											if ($result['disponibilidad']==1) {
-												echo "<td><button type='button' class='btn btn-success reserva'>Reservar</button></td>"; // Campo 6
+												echo "<td>
+														<form action='reservar_recurso.php'>
+															<input type='hidden' name='idusuario' value=".$resname['idusuario'].">
+															<input type='hidden' name='idreserva' value=".$result['idreserva'].">
+															<input type='hidden' name='idreserva_recurso' value=".$result['idreserva_recurso'].">
+															<button type='submit' name='reservar' value='Reservar' class='btn btn-success reserva'>Reservar</button>
+														</form>
+													</td>";
 											} else {
 												// Si no lo está, comprueba el nombre del usuario de la sesión y lo compara con el del resultado (el de la tabla)
 												if ($resname['nombre']==$result['nombre']) {
-													echo "<td><button type='button' class='btn btn-warning reserva'>Liberar</button></td>"; // Campo6
+													echo "<td>
+														<form action='liberar_recurso.php'>
+															<input type='hidden' name='idusuario' value=".$resname['idusuario'].">
+															<input type='hidden' name='idreserva' value=".$result['idreserva'].">
+															<input type='hidden' name='idreserva_recurso' value=".$result['idreserva_recurso'].">
+															<button type='submit' name='liberar' value='Liberar' class='btn btn-warning reserva'>Liberar</button>
+														</form>
+													</td>"; // Campo6
 												} else {
 													echo "<td><button type='button' class='btn btn-danger disabled reserva'>Reservado</button></td>"; // Campo6
 												}
@@ -163,6 +158,7 @@
 									// Fin del While $result
 									}
 								echo "</table>";
+								// echo "<br><br>Hola: ".$result['nom_recurso']." ;"
 							} else {
 								echo "<table class='table'>
 										<tr>
@@ -186,6 +182,8 @@
 						}
 					?>
 				</div>
+				<br><br><br><br>
+
 			</div>
 		</div>
 	</body>
